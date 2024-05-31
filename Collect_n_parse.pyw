@@ -4,6 +4,8 @@ import gzip
 import shutil
 import xml.etree.ElementTree as ET
 import pandas as pd
+import matplotlib.pyplot as plt
+from datetime import datetime
 
 def decompress_zip_files(zip_files, output_dir):
     """
@@ -176,10 +178,50 @@ def save_reports_to_csv(reports, csv_file):
     df = pd.DataFrame(rows)
     df.to_csv(csv_file, index=False)
 
-# Example usage:
-directory = 'C:/Users/%user%/Downloads/'  # Directory to search for .zip and .gz files
-output_dir = 'C:/Users/%user%/Downloads/'
-csv_file = 'C:/Users/%user%/Downloads/dmarc_reports.csv'
+def read_csv_and_display_chart(csv_file):
+    """
+    Reads the CSV file and displays a chart based on the data.
+    
+    :param csv_file: Path to the CSV file to read the data from.
+    """
+    df = pd.read_csv(csv_file)
+    
+    # Example: Display a chart of the top 20 source IPs by count
+    ip_counts = df.groupby('source_ip')['count'].sum().nlargest(20)
+    
+    plt.figure(figsize=(10, 6))
+    ip_counts.plot(kind='bar')
+    plt.title('Top 20 Source IPs by Count in DMARC Report')
+    plt.xlabel('Source IP')
+    plt.ylabel('Count')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+    
+    
+def cleanup_extracted_files(output_dir):
+    """
+    Deletes all .xml files in the specified directory.
+    
+    :param output_dir: Directory to clean up.
+    """
+    for root, _, files in os.walk(output_dir):
+        for file in files:
+            if file.endswith(".xml"):
+                os.remove(os.path.join(root, file))
 
-reports = process_dmarc_reports_from_directory(directory, output_dir)
-save_reports_to_csv(reports, csv_file)
+now = datetime.now()
+currentdate = now.strftime("%Y-%m-%d %H-%M-%S")
+
+# Example usage:
+directory = 'C:/Users/%username%/Downloads/'  # Directory to search for .zip and .gz files
+output_dir = 'C:/Users/%username%/Downloads/'
+csv_file = 'C:/Users/%username%/Downloads/dmarc_reports'+currentdate+'.csv'
+
+try: 
+    reports = process_dmarc_reports_from_directory(directory, output_dir)
+    save_reports_to_csv(reports, csv_file)
+    read_csv_and_display_chart(csv_file)
+    
+finally:
+    cleanup_extracted_files(output_dir)
