@@ -214,9 +214,9 @@ now = datetime.now()
 currentdate = now.strftime("%Y-%m-%d %H-%M-%S")
 
 # Example usage:
-directory = 'C:/Users/%username%/Downloads/'  # Directory to search for .zip and .gz files
-output_dir = 'C:/Users/%username%/Downloads/'
-csv_file = 'C:/Users/%username%/Downloads/dmarc_reports'+currentdate+'.csv'
+directory = 'C:/Users/%USERNAME%/Downloads/'  # Directory to search for .zip and .gz files
+output_dir = 'C:/Users/%USERNAME%/Downloads/'
+csv_file = 'C:/Users/%USERNAME%/Downloads/dmarc_reports'+currentdate+'.csv'
 
 try: 
     reports = process_dmarc_reports_from_directory(directory, output_dir)
