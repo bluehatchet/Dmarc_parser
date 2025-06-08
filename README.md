@@ -1,5 +1,5 @@
-Things to Know
-The script relies on external packages: pandas, matplotlib, and xml.etree.ElementTree. Ensure these dependencies are installed in your Python environment.
+Things to Know:
+This script relies on external python packages: pandas, matplotlib, and xml.etree.ElementTree. Ensure these dependencies are installed in your Python environment.
 
 Paths in the example usage use Windows format with %username%. Adjust these to match your actual system paths or modify the script to accept command-line arguments for more flexibility.
 
